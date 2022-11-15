@@ -9,10 +9,10 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({ name: "", link: "" });
 
   function handleCardClick(props) {
-    setSelectedCard(props);
+    setSelectedCard({ name: props.name, link: props.link });
   }
 
   function handleEditAvatarClick() {
@@ -31,20 +31,28 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setSelectedCard(false);
+    setSelectedCard({ name: "", link: "" });
   }
 
+  const isOpen =
+    isEditAvatarPopupOpen ||
+    isEditProfilePopupOpen ||
+    isAddPlacePopupOpen ||
+    selectedCard.link;
+
   useEffect(() => {
-    const handleEsc = (evt) => {
+    function closeByEscape(evt) {
       if (evt.key === "Escape") {
         closeAllPopups();
       }
-    };
-    document.addEventListener("keydown", handleEsc);
-    return () => {
-      document.removeEventListener("keydown", handleEsc);
-    };
-  }, []);
+    }
+    if (isOpen) {
+      document.addEventListener("keydown", closeByEscape);
+      return () => {
+        document.removeEventListener("keydown", closeByEscape);
+      };
+    }
+  }, [isOpen]);
 
   return (
     <>
@@ -64,79 +72,73 @@ function App() {
         isOpen={isEditProfilePopupOpen}
         title="Редактировать профиль"
         onClose={closeAllPopups}
-        children={
-          <>
-            <input
-              type="text"
-              className="popup__input"
-              id="name-input"
-              name="person"
-              placeholder="Имя"
-              pattern=".{2,40}"
-              required
-            />
-            <span className="popup__error name-input-error"></span>
-            <input
-              type="text"
-              className="popup__input"
-              id="job-input"
-              name="job"
-              placeholder="О себе"
-              pattern=".{2,200}"
-              required
-            />
-            <span className="popup__error job-input-error"></span>
-          </>
-        }
-      />
+        buttonText="Сохранить"
+      >
+        <input
+          type="text"
+          className="popup__input"
+          id="name-input"
+          name="person"
+          placeholder="Имя"
+          pattern=".{2,40}"
+          required
+        />
+        <span className="popup__error name-input-error"></span>
+        <input
+          type="text"
+          className="popup__input"
+          id="job-input"
+          name="job"
+          placeholder="О себе"
+          pattern=".{2,200}"
+          required
+        />
+        <span className="popup__error job-input-error"></span>
+      </PopupWithForm>
       <PopupWithForm
         name="add"
         isOpen={isAddPlacePopupOpen}
         title="Новое место"
         onClose={closeAllPopups}
-        children={
-          <>
-            <input
-              type="text"
-              className="popup__input"
-              id="img-input"
-              name="name"
-              placeholder="Название"
-              pattern=".{2,30}"
-              required
-            />
-            <span className="popup__error img-input-error"></span>
-            <input
-              type="url"
-              className="popup__input"
-              id="source-input"
-              name="link"
-              placeholder="Ссылка на картинку"
-              required
-            />
-            <span className="popup__error source-input-error"></span>
-          </>
-        }
-      />
+        buttonText="Сохранить"
+      >
+        <input
+          type="text"
+          className="popup__input"
+          id="img-input"
+          name="name"
+          placeholder="Название"
+          pattern=".{2,30}"
+          required
+        />
+        <span className="popup__error img-input-error"></span>
+        <input
+          type="url"
+          className="popup__input"
+          id="source-input"
+          name="link"
+          placeholder="Ссылка на картинку"
+          required
+        />
+        <span className="popup__error source-input-error"></span>
+      </PopupWithForm>
       <PopupWithForm
         name="avatar"
         isOpen={isEditAvatarPopupOpen}
         title="Обновить аватар"
         onClose={closeAllPopups}
-        children={
-          <>
-            <input
-              type="url"
-              className="popup__input"
-              id="avatarLinkInput"
-              name="avatarLinkInput"
-              placeholder="Ссылка на картинку"
-              required
-            />
-            <span className="popup__error avatarLinkInput-error"></span>
-          </>
-        }
-      />
+        buttonText="Сохранить"
+      >
+        <input
+          type="url"
+          className="popup__input"
+          id="avatarLinkInput"
+          name="avatarLinkInput"
+          placeholder="Ссылка на картинку"
+          required
+        />
+        <span className="popup__error avatarLinkInput-error"></span>
+      </PopupWithForm>
     </>
   );
 }

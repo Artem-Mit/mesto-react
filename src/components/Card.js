@@ -7,7 +7,7 @@ function Card(props) {
     <article className="element">
       <img
         src={props.link}
-        alt=""
+        alt={props.name}
         className="element__img"
         onClick={handleClick}
       />
