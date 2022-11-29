@@ -57,3 +57,7 @@
 @import url(./blocks/img-popup/__caption/img-popup__caption.css);
 @import url(./blocks/img-popup/__figure/img-popup__figure.css);
 @import url(./blocks/img-popup/__img/img-popup__img.css);
+
+/* Стили спиннера */
+@import url(./blocks/spinner/spinner.css);
+

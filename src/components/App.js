@@ -8,6 +8,7 @@ import api from "../utils/Api";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import Spinner from "./Spinner";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -16,8 +17,11 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({ name: "", link: "" });
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingButtonText, setIsLoadingButtonText] = useState(false)
 
   useEffect(() => {
+    setIsLoading(true);
     api
       .getInitialCards()
       .then((initialCards) => {
@@ -53,6 +57,7 @@ function App() {
       .then((userData) => {
         setCurrentUser(userData);
       })
+      .then(() => setIsLoading(false))
       .catch((err) => console.log(err.message));
   }, []);
 
@@ -100,30 +105,35 @@ function App() {
   }, [isOpen]);
 
   function handleUpdateUser(data) {
+    setIsLoadingButtonText(true)
     api
       .editProfileInfo(data)
       .then((userData) => setCurrentUser(userData))
-      .then(() => closeAllPopups())
+      .then(() => {closeAllPopups(); setIsLoadingButtonText(false)})
       .catch((err) => console.log(err.message));
   }
 
   function handleUpdateAvatar(data) {
+    setIsLoadingButtonText(true)
     api
       .setAvatar(data)
       .then((userData) => setCurrentUser(userData))
-      .then(() => closeAllPopups())
+      .then(() => {closeAllPopups(); setIsLoadingButtonText(false)} )
       .catch((err) => console.log(err.message));
   }
 
   function handleUpdateCards(newCard) {
+    setIsLoadingButtonText(true)
     api
       .postNewCard(newCard)
       .then((res) => setCards([res, ...cards]))
-      .then(() => closeAllPopups())
+      .then(() => {closeAllPopups(); setIsLoadingButtonText(false)})
       .catch((err) => console.log(err.message));
   }
 
-  return (
+  return isLoading ? (
+    <Spinner isLoading={isLoading} size={150}/>
+  ) : (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page__container">
         <Header />
@@ -140,16 +150,19 @@ function App() {
       </div>
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       <EditProfilePopup
+        loading={isLoadingButtonText}
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
         onUpdateUser={handleUpdateUser}
       />
       <AddPlacePopup
+        loading={isLoadingButtonText}
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
         onAddPlace={handleUpdateCards}
       />
       <EditAvatarPopup
+        loading={isLoadingButtonText}
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
         onUpdateAvatar={handleUpdateAvatar}
