@@ -4,14 +4,13 @@ import PopupWithForm from "./PopupWithForm";
 function EditAvatarPopup(props) {
   const avatarLinkInput = useRef();
 
-
   function handleSubmit(e) {
     e.preventDefault();
     props.onUpdateAvatar({
-      avatar: avatarLinkInput.current.value
+      avatar: avatarLinkInput.current.value,
     });
+    avatarLinkInput.current.value = ''
   }
-
 
   return (
     <PopupWithForm
@@ -19,7 +18,7 @@ function EditAvatarPopup(props) {
       isOpen={props.isOpen}
       title="Обновить аватар"
       onClose={props.onClose}
-      buttonText={props.loading ? 'Сохранение...': 'Сохранить'}
+      buttonText={props.loading ? "Сохранение..." : "Сохранить"}
       onSubmit={handleSubmit}
     >
       <input

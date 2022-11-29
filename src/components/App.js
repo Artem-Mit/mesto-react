@@ -18,7 +18,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingButtonText, setIsLoadingButtonText] = useState(false)
+  const [isLoadingButtonText, setIsLoadingButtonText] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -105,34 +105,43 @@ function App() {
   }, [isOpen]);
 
   function handleUpdateUser(data) {
-    setIsLoadingButtonText(true)
+    setIsLoadingButtonText(true);
     api
       .editProfileInfo(data)
       .then((userData) => setCurrentUser(userData))
-      .then(() => {closeAllPopups(); setIsLoadingButtonText(false)})
+      .then(() => {
+        closeAllPopups();
+        setIsLoadingButtonText(false);
+      })
       .catch((err) => console.log(err.message));
   }
 
   function handleUpdateAvatar(data) {
-    setIsLoadingButtonText(true)
+    setIsLoadingButtonText(true);
     api
       .setAvatar(data)
       .then((userData) => setCurrentUser(userData))
-      .then(() => {closeAllPopups(); setIsLoadingButtonText(false)} )
+      .then(() => {
+        closeAllPopups();
+        setIsLoadingButtonText(false);
+      })
       .catch((err) => console.log(err.message));
   }
 
   function handleUpdateCards(newCard) {
-    setIsLoadingButtonText(true)
+    setIsLoadingButtonText(true);
     api
       .postNewCard(newCard)
       .then((res) => setCards([res, ...cards]))
-      .then(() => {closeAllPopups(); setIsLoadingButtonText(false)})
+      .then(() => {
+        closeAllPopups();
+        setIsLoadingButtonText(false);
+      })
       .catch((err) => console.log(err.message));
   }
 
   return isLoading ? (
-    <Spinner isLoading={isLoading} size={150}/>
+    <Spinner isLoading={isLoading} size={150} />
   ) : (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page__container">

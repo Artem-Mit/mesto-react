@@ -21,6 +21,8 @@ function AddPlacePopup(props) {
       link: cardLink,
     });
 
+    setCardName('')
+    setCardLink('')
   }
 
   return (
@@ -29,7 +31,7 @@ function AddPlacePopup(props) {
       isOpen={props.isOpen}
       title="Новое место"
       onClose={props.onClose}
-      buttonText={props.loading ? 'Сохранение...': 'Сохранить'}
+      buttonText={props.loading ? "Сохранение..." : "Сохранить"}
       onSubmit={handleSubmit}
     >
       <input
