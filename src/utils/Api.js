@@ -36,16 +36,12 @@ class Api {
     return this._useFetch(`/cards/${id}`, 'DELETE')
   }
 
-  setLike(id) {
-    return this._useFetch(`/cards/${id}/likes`, 'PUT')
-  }
-
-  removeLike(id) {
-    return this._useFetch(`/cards/${id}/likes`, 'DELETE')
-  }
-
   setAvatar(data) {
     return this._useFetch(`/users/me/avatar`, 'PATCH', data)
+  }
+
+  changeLikeCardStatus(id, isLiked){
+    return this._useFetch(`/cards/${id}/likes`, isLiked ? 'PUT' : 'DELETE')
   }
 }
 
