@@ -1,12 +1,15 @@
 class Api {
-  constructor (options) {
+  constructor(options) {
     this._url = options.url;
     this._headers = options.headers;
   }
 
   _useFetch(link, newMethod = "GET", newBody) {
-    return fetch(this._url+link, {method: newMethod , headers: this._headers, body: JSON.stringify(newBody)})
-    .then(res => this._checkResult(res))
+    return fetch(`${this._url}${link}`, {
+      method: newMethod,
+      headers: this._headers,
+      body: JSON.stringify(newBody),
+    }).then((res) => this._checkResult(res));
   }
 
   _checkResult(res) {
@@ -17,34 +20,33 @@ class Api {
   }
 
   getProfileInfo() {
-    return this._useFetch('/users/me')
+    return this._useFetch("/users/me");
   }
 
   getInitialCards() {
-    return this._useFetch('/cards')
+    return this._useFetch("/cards");
   }
 
   editProfileInfo(data) {
-    return this._useFetch('/users/me', 'PATCH', data)
+    return this._useFetch("/users/me", "PATCH", data);
   }
 
   postNewCard(data) {
-    return this._useFetch('/cards', 'POST', data)
+    return this._useFetch("/cards", "POST", data);
   }
 
   deleteCard(id) {
-    return this._useFetch(`/cards/${id}`, 'DELETE')
+    return this._useFetch(`/cards/${id}`, "DELETE");
   }
 
   setAvatar(data) {
-    return this._useFetch(`/users/me/avatar`, 'PATCH', data)
+    return this._useFetch(`/users/me/avatar`, "PATCH", data);
   }
 
-  changeLikeCardStatus(id, isLiked){
-    return this._useFetch(`/cards/${id}/likes`, isLiked ? 'PUT' : 'DELETE')
+  changeLikeCardStatus(id, isLiked) {
+    return this._useFetch(`/cards/${id}/likes`, isLiked ? "PUT" : "DELETE");
   }
 }
-
 
 const api = new Api({
   url: "https://mesto.nomoreparties.co/v1/cohort-52",
@@ -54,4 +56,4 @@ const api = new Api({
   },
 });
 
-export default api
+export default api;

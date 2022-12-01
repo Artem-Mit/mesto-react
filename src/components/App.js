@@ -4,7 +4,7 @@ import Header from "./Header";
 import ImagePopup from "./ImagePopup";
 import Main from "./Main";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import api from "../utils/Api";
+import api from "../utils/api";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
@@ -57,8 +57,8 @@ function App() {
       .then((userData) => {
         setCurrentUser(userData);
       })
-      .then(() => setIsLoading(false))
-      .catch((err) => console.log(err.message));
+      .catch((err) => console.log(err.message))
+      .finally(() => setIsLoading(false))
   }, []);
 
   function handleCardClick(props) {
@@ -103,6 +103,7 @@ function App() {
       };
     }
   }, [isOpen]);
+
 
   function handleUpdateUser(data) {
     setIsLoadingButtonText(true);

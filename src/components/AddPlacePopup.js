@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 
 function AddPlacePopup(props) {
@@ -20,10 +20,12 @@ function AddPlacePopup(props) {
       name: cardName,
       link: cardLink,
     });
+  }
 
+  useEffect(() => {
     setCardName('')
     setCardLink('')
-  }
+  }, [props.isOpen])
 
   return (
     <PopupWithForm
